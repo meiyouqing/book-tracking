@@ -172,3 +172,20 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+/* loading */
+.loading{
+  position: absolute;
+  z-index: 11;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, .5);
+  background-image: url(./icons/loading.gif);
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.f-pr{
+  position: relative;
+}

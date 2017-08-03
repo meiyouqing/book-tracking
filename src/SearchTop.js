@@ -14,6 +14,9 @@ class SearchTop extends Component{
       e.preventDefault();
       this.props.onSearch(this.refs.searchInput.value)
     }
+    componentDidMount(){
+      this.refs.searchInput.focus();
+    }
     render(){
         return (
           <div className="search-books-bar">

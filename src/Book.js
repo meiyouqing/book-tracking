@@ -1,32 +1,39 @@
-import React, { Component } from 'react'
-//import { Router, Link } from 'react-router-dom'
+import React from 'react'
 import PropTypes from 'prop-types'
 
-class Book extends Component{
+import Loading from './Loading'
+
+class Book extends React.PureComponent{
     static propTypes = {
         book: PropTypes.object.isRequired,
         onSelectChange: PropTypes.func.isRequired
     }
     state = {
-        currentShelf: this.props.book.shelf
+        loading: false
     }
     handleChange = e => {
-        e.preventDefault();
+        this.setState({ loading: true })
         const selected = e.target.value;
-        this.setState({ currentShelf: selected });
-        this.props.onSelectChange(selected, this.props.book);
+        this.props.onSelectChange(selected, this.props.book, () => {
+            this.setState({ loading: false })
+        });
     }
     render(){
-        const { state, props } = this;
+        const { props, state } = this;
         return (
             <li>
-                <div className="book">
+                <div className="book f-pr">
+                    {
+                        state.loading ?
+                            <Loading /> :
+                            ''
+                    }
                     <div className="book-top">
                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${props.book.imageLinks.smallThumbnail})`, backgroundRepeat:'no-repeat' }}></div>
                         <div className="book-shelf-changer">
                             <select
                             onChange={this.handleChange}
-                            defaultValue={state.currentShelf}
+                            defaultValue={props.book.shelf}
                             >
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
