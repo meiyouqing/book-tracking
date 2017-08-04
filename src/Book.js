@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Loading from './Loading'
 
-class Book extends React.PureComponent{
+class Book extends React.PureComponent {
     static propTypes = {
         book: PropTypes.object.isRequired,
         onSelectChange: PropTypes.func.isRequired
@@ -18,7 +18,7 @@ class Book extends React.PureComponent{
             this.setState({ loading: false })
         });
     }
-    render(){
+    render() {
         const { props, state } = this;
         return (
             <li>
@@ -29,12 +29,12 @@ class Book extends React.PureComponent{
                             ''
                     }
                     <div className="book-top">
-                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${props.book.imageLinks.smallThumbnail})`, backgroundRepeat:'no-repeat' }}></div>
+                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${props.book.imageLinks.smallThumbnail})`, backgroundRepeat: 'no-repeat' }}></div>
                         <div className="book-shelf-changer">
                             <select
-                            onChange={this.handleChange}
-                            defaultValue={props.book.shelf}
-                            >
+                                onChange={this.handleChange}
+                                defaultValue={props.book.shelf}
+                                >
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
@@ -44,7 +44,13 @@ class Book extends React.PureComponent{
                         </div>
                     </div>
                     <div className="book-title">{props.book.title}</div>
-                    <div className="book-authors">{props.book.authors.length > 1 ? props.book.authors[0]+', etc' : props.book.authors[0]}</div>
+                    <div className="book-authors">
+                        {
+                            props.book.authors && props.book.authors.length ?
+                            (props.book.authors.length > 1 ? props.book.authors[0] + ', etc' : props.book.authors[0]) :
+                            ''
+                        }
+                    </div>
                 </div>
             </li>
 

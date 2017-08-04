@@ -12,48 +12,56 @@ class SearchPage extends Component {
     }
     state = {
         matchedBooks: [],
-        loaing: false
+        loaing: false,
+        noResult: false
     }
     handleSearch = query => {
-        this.setState({ loading: true });
+        //console.log(query)
+        if(!query) {
+            this.setState({ matchedBooks: [] });
+            return;
+        }
+        this.setState({ loading: true, noResult: false });
         BooksAPI.search(query, 100)
             .then(matchedBooks => {
+                this.setState({ loading: false });
+                if (matchedBooks.error) {
+                    this.setState({ noResult: true });
+                    return;
+                }
                 const { books } = this.props;
-                const filteredBooks = matchedBooks.filter(matchBook => {
+                matchedBooks.forEach(matchBook => {
+                    matchBook.shelf = 'none'; //seting the default value of 'shelft' property of matchBook which is not in my shelf
                     for (let i = 0, len = books.length; i < len; i++) {
                         if (books[i].id === matchBook.id) {
-                            return false; //remove the matchedBook which is already in my shelf
+                            matchBook.shelf =  books[i].shelf; //seting the right value of the book which is already in my shelf
                         }
                     }
-                    matchBook.shelf = 'none'; //seting the default value of 'shelft' property of matchBook which is not in my shelf
-                    return true;
-
                 })
-                this.setState({ matchedBooks: filteredBooks, loading: false })
+                this.setState({ matchedBooks })
             })
             .catch(err => {
+                console.log(err)
                 alert(err.message)
             })
     }
-    handleAdd = (shelf, book) => {
-        this.setState(state => ({
-            matchedBooks: state.matchedBooks.filter(v => (v.id !== book.id))
-        }))
-        this.props.onSelectChange(shelf, book)
-    }
     render() {
-        const { state } = this;
+        const { state, props } = this;
         const content = state.loading ?
             <Loading /> :
             (
-                <ol className="books-grid">
-                    {
-                        state.matchedBooks.map((book) => (
-                            <Book book={book} onSelectChange={this.handleAdd} key={book.id} />
-                        ))
-                    }
-                </ol>
-            );
+                state.noResult ?
+                    <div className="no-result">sorry,no result by the current query</div> :
+                    (
+                        <ol className="books-grid">
+                            {
+                                state.matchedBooks.map((book) => (
+                                    <Book book={book} onSelectChange={props.onSelectChange} key={book.id} />
+                                ))
+                            }
+                        </ol>
+                    )
+            )
 
         return (
             <div>

@@ -14,6 +14,13 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelf)
       .then(res => {
         callback();
+        if(book.shelf === 'none'){ //add a new book
+          book.shelf = shelf;
+          this.setState(state => ({
+            books: state.books.concat([book])
+          }))
+          return;
+        }
         this.setState(state => ({
           books: state.books.filter(v => {
             if (v.id === book.id) {
@@ -61,7 +68,7 @@ class BooksApp extends React.Component {
         <Route path="/search" render={() => (
           <SearchPage
             books={this.state.books}
-            onSelectChange={this.handleAddBook}
+            onSelectChange={this.handleMoveBook}
          />
         )} />
       </div>
