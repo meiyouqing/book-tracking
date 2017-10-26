@@ -1,5 +1,5 @@
 # 个人阅读轨迹 individual book tracking
-这是一个书架web应用，你可以选择并分类你所阅读过的书，以及正在阅读或想要阅读的书。这个应用使用react构建，在你与应用的交互过程中，是使用一个服务接口和客户端库来保存信息的。
+这是一个书架web应用，你可以选择并分类你所阅读过的，以及正在阅读或想要阅读的书。这个应用使用react构建，在你与应用的交互过程中，使用一个服务接口和客户端库来保存信息。
 
 A bookshelf app that allows you to select and categorize books you have read, are currently reading, or want to read. The project emphasizes using React to build the application and provides an API server and client library that you will use to persist information as you interact with the application.
 
